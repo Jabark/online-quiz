@@ -62,7 +62,7 @@
           "configurations": {
             "production": {
               "browserTarget": "ecclesia-activity-day:build:production",
-              "proxyConfig": "src/proxy.conf.json"
+              "proxyConfig": "src/proxy.conf.prod.json"
             },
             "development": {
               "browserTarget": "ecclesia-activity-day:build:development",

@@ -1,0 +1,25 @@
+{
+  "/api/*": {
+    "pathRewrite": {
+      "^/api": ""
+    },
+    "secure": false,
+    "target": "http://activity-day-quiz.azurewebsites.net:3000",
+    "changeOrigin": true
+  },
+  "/images/*": {
+    "secure": false,
+    "target": "http://activity-day-quiz.azurewebsites.net:3000",
+    "changeOrigin": true
+  },
+  "/sounds/*": {
+    "secure": false,
+    "target": "http://activity-day-quiz.azurewebsites.net:3000",
+    "changeOrigin": true
+  },
+  "/socket.io/*": {
+    "secure": false,
+    "target": "http://activity-day-quiz.azurewebsites.net:3000",
+    "changeOrigin": true
+  }
+}
