@@ -1,0 +1,265 @@
+<audio #audioCorrect class="qtRound-audio">
+  <source src="/sounds/correct.mp3" type="audio/mpeg" />
+  Your browser does not support the audio element.
+</audio>
+<audio #audioWrong class="qtRound-audio">
+  <source src="/sounds/wrong.mp3" type="audio/mpeg" />
+  Your browser does not support the audio element.
+</audio>
+<audio #audioChampion class="qtRound-audio">
+  <source src="/sounds/champions.mp3" type="audio/mpeg" />
+  Your browser does not support the audio element.
+</audio>
+
+<button
+  mat-flat-button
+  class="qtRound-fullScreen"
+  color="primary"
+  (click)="toggleFullscreen()"
+>
+  Toggle Fullscreen
+</button>
+
+<ng-container *ngIf="tracker && roundID > 0">
+  <form class="qtRound" [formGroup]="form" [ngSwitch]="tracker.phase">
+    <ng-container *ngSwitchCase="'Intro'">
+      <h1>{{ tracker.round.Name }}</h1>
+      <p>{{ tracker.round.Description }}</p>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'Question'">
+      <div class="qtRound-timer" [class.isClose]="this.tracker.timeLeft < 6">
+        {{ timer }}
+      </div>
+
+      <ng-container [ngSwitch]="tracker.round.RoundType">
+        <ng-container *ngSwitchCase="'Single'">
+          <p>{{ tracker.stageData }}</p>
+          <mat-form-field appearance="outline" class="qtRound-field">
+            <mat-label>Enter your answer</mat-label>
+            <input
+              autocomplete="off"
+              class="qtRound-input"
+              type="text"
+              matInput
+              formControlName="Answer1"
+            />
+          </mat-form-field>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'Grid'">
+          <div class="qtRound-gridContent">
+            <h1>
+              {{ splitStageData(tracker.stageData)[1] }}
+            </h1>
+            <div class="qtRound-gridWhole">
+              <img
+                loading="lazy"
+                class="qtRound-gridImage"
+                alt=""
+                src="/images/rounds/{{ tracker.round.ID }}/questions/{{
+                  splitStageData(tracker.stageData)[0]
+                }}"
+              />
+              <div class="qtRound-gridContainer">
+                <ng-container
+                  *ngFor="let a of [].constructor(10); let x = index"
+                >
+                  <ng-container
+                    *ngFor="let b of [].constructor(10); let y = index"
+                  >
+                    <input
+                      class="qtRound-gridRadio"
+                      type="radio"
+                      [value]="x.toString() + y.toString()"
+                      [id]="'cell' + x + y"
+                      formControlName="Answer1"
+                    />
+                    <label
+                      class="qtRound-gridRadioLabel"
+                      [for]="'cell' + x + y"
+                    ></label>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'Picture'">
+          <p class="qtRound-content">
+            <img
+              class="qtRound-image"
+              alt=""
+              src="/images/rounds/{{ tracker.round.ID }}/questions/{{
+                splitStageData(tracker.stageData)[0]
+              }}"
+            />
+          </p>
+          <mat-form-field appearance="outline" class="qtRound-field">
+            <mat-label>Enter your answer</mat-label>
+            <input
+              autocomplete="off"
+              class="qtRound-input"
+              type="text"
+              matInput
+              formControlName="Answer1"
+            />
+          </mat-form-field>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'Multiple'">
+          <div
+            class="qtRound-fields"
+            *ngIf="tracker.stageData && tracker.stageData.length"
+          >
+            <ng-container
+              *ngFor="let data of $any(tracker.stageData); let i = index"
+            >
+              <mat-form-field appearance="outline" class="qtRound-field">
+                <mat-label>{{ data }}</mat-label>
+                <input
+                  autocomplete="off"
+                  class="qtRound-input"
+                  type="text"
+                  matInput
+                  [formControlName]="'Answer' + (i + 1)"
+                />
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'Answer'">
+      <ng-container [ngSwitch]="tracker.round.RoundType">
+        <ng-container *ngSwitchCase="'Single'">
+          <p *ngIf="tracker.stageData">{{ tracker.stageData }}</p>
+          <mat-form-field
+            *ngIf="form.controls['Answer1']"
+            [class.isCorrect]="isCorrect(1)"
+            appearance="outline"
+            class="qtRound-fieldAnswer"
+          >
+            <mat-label>Your answer</mat-label>
+            <input
+              readonly
+              class="qtRound-input"
+              type="text"
+              matInput
+              [formControlName]="'Answer1'"
+            />
+            <mat-icon matSuffix class="qtRound-icon"
+              >{{ isCorrect(1) ? "check_circle" : "cancel" }}
+            </mat-icon>
+          </mat-form-field>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'Grid'">
+          <div class="qtRound-gridContent">
+            <h1>{{ splitStageData(tracker.stageData)[1] }}</h1>
+            <div class="qtRound-gridWhole" *ngIf="form.controls['Answer1']">
+              <img
+                loading="lazy"
+                class="qtRound-gridImage"
+                alt=""
+                src="/images/rounds/{{ tracker.round.ID }}/answers/{{
+                  splitStageData(tracker.stageData)[0]
+                }}"
+              />
+              <div class="qtRound-gridContainer">
+                <ng-container
+                  *ngFor="let a of [].constructor(10); let x = index"
+                >
+                  <ng-container
+                    *ngFor="let b of [].constructor(10); let y = index"
+                  >
+                    <input
+                      class="qtRound-gridRadio"
+                      type="radio"
+                      [value]="x.toString() + y.toString()"
+                      [id]="'cell' + x + y"
+                      [formControlName]="'Answer1'"
+                    />
+                    <div
+                      class="qtRound-gridRadioLabel"
+                      [class.point-3]="
+                        userAnswer === x.toString() + y.toString() &&
+                        checkRange() === 3
+                      "
+                      [class.point-1]="
+                        userAnswer === x.toString() + y.toString() &&
+                        checkRange() === 1
+                      "
+                      [class.point-0]="
+                        userAnswer === x.toString() + y.toString() &&
+                        checkRange() === 0
+                      "
+                    ></div>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'Picture'">
+          <div class="qtRound-imageContent">
+            <h1>
+              {{ splitStageData(tracker.stageData)[1] }}
+            </h1>
+            <img
+              class="qtRound-image"
+              src="/images/rounds/{{ tracker.round.ID }}/answers/{{
+                splitStageData(tracker.stageData)[0]
+              }}"
+              alt=""
+            />
+          </div>
+          <mat-form-field
+            *ngIf="form.controls['Answer1']"
+            [class.isCorrect]="isCorrect(1)"
+            appearance="outline"
+            class="qtRound-fieldAnswer"
+          >
+            <mat-label>Your answer</mat-label>
+            <input
+              readonly
+              class="qtRound-input"
+              type="text"
+              matInput
+              [formControlName]="'Answer1'"
+            />
+            <mat-icon matSuffix class="qtRound-icon"
+              >{{ isCorrect(1) ? "check_circle" : "cancel" }}
+            </mat-icon>
+          </mat-form-field>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'Multiple'">
+          <ol
+            class="qtRound-content qtRound-list"
+            *ngIf="tracker.stageData && tracker.stageData.length"
+          >
+            <li
+              class="qtRound-listItem"
+              [class.isCorrect]="isCorrect(i + 1)"
+              *ngFor="let data of $any(tracker.stageData); let i = index"
+            >
+              {{ data }}
+              <mat-icon class="qtRound-listItemIcon"
+                >{{ isCorrect(i + 1) ? "check_circle" : "cancel" }}
+              </mat-icon>
+            </li>
+          </ol>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </form>
+</ng-container>
+
+<div *ngIf="roundID < 0" class="qtRound">
+  <h1>🎉 {{ winningContestantNames }} are the winners! 🎉</h1>
+  <p>That's all folks!</p>
+</div>

@@ -1,0 +1,24 @@
+{
+  "/api/*": {
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api": ""
+    },
+    "secure": false,
+    "target": "http://localhost:3000"
+  },
+  "/images/*": {
+    "logLevel": "debug",
+    "secure": false,
+    "target": "http://localhost:3000"
+  },
+  "/sounds/*": {
+    "logLevel": "debug",
+    "secure": false,
+    "target": "http://localhost:3000"
+  },
+  "/socket.io/*": {
+    "secure": false,
+    "target": "http://localhost:3000"
+  }
+}

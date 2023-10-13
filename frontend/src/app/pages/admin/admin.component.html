@@ -1,0 +1,76 @@
+<ng-container *ngIf="passwordCorrect">
+  <div class="qtAdmin" *ngIf="tracker">
+    <div class="qtAdmin-left">
+      <app-scores class="qtAdmin-chart"></app-scores>
+
+      <button
+        *ngIf="currentRound === 0"
+        (click)="startQuiz()"
+        class="qtAdmin-button"
+        mat-raised-button
+        color="primary"
+      >
+        Start Quiz
+      </button>
+
+      <button
+        *ngIf="currentRound > 0"
+        (click)="pauseQuiz()"
+        class="qtAdmin-button"
+        mat-raised-button
+        color="primary"
+      >
+        {{ isPaused ? "Unp" : "P" }}ause Quiz
+      </button>
+    </div>
+
+    <form class="qtAdmin-form" *ngIf="form" [formGroup]="form">
+      <ul *ngIf="!isQuestionPhase && form.controls" class="qtAdmin-contestants">
+        <li *ngFor="let contestant of contestants" class="qtAdmin-contestant">
+          <mat-form-field class="qtAdmin-field">
+            <mat-label>Score for {{ contestant.name }}</mat-label>
+            <input
+              class="qtAdmin-input"
+              type="number"
+              matInput
+              [formControlName]="'Contestant' + contestant.id"
+              placeholder="Score for {{ contestant.name }}"
+            />
+          </mat-form-field>
+          <button
+            color="primary"
+            (click)="changeScore(contestant.id)"
+            mat-icon-button
+            attr.aria-label="Submit score for {{ contestant.name }}"
+          >
+            <mat-icon>send</mat-icon>
+          </button>
+        </li>
+      </ul>
+    </form>
+  </div>
+</ng-container>
+<ng-container *ngIf="!passwordCorrect">
+  <div class="qtAdmin">
+    <form class="qtAdmin-form" *ngIf="form" [formGroup]="form">
+      <mat-form-field appearance="outline" class="qtAdmin-field">
+        <mat-label>Enter password</mat-label>
+        <input
+          class="qtAdmin-input"
+          type="password"
+          matInput
+          formControlName="password"
+          placeholder="Enter password"
+        />
+      </mat-form-field>
+      <button
+        color="primary"
+        (click)="enterPassword()"
+        mat-icon-button
+        aria-label="Submit password"
+      >
+        <mat-icon>send</mat-icon>
+      </button>
+    </form>
+  </div>
+</ng-container>

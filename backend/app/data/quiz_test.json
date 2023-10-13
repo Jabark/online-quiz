@@ -1,0 +1,68 @@
+[
+  {
+    "ID": 1,
+    "Name": "Missing Object",
+    "RoundType": "Grid",
+    "Description": "Find the missing object in the picture and click the square of the location you think it is. 3 points for a correct answer, 1 point for being close.",
+    "Questions": ["1.png|Where is: The American Football"],
+    "Answers": ["64"]
+  },
+  {
+    "ID": 2,
+    "Name": "Anagrams",
+    "RoundType": "Multiple",
+    "Description": "20 anagrams of ecclesia names. You have 10 minutes. HINT: the anagram and the answer have the same number of words",
+    "Questions": [
+      "REED STRESS TABBY",
+      "INK SLYNNG",
+      "VESUVIAN JARS",
+      "BUSLEMM",
+      "YIPBURS FRANK",
+      "ELL STATUS",
+      "HERMAMAS",
+      "AHNERO",
+      "LORD FORDAFT",
+      "CHEESE TWIRLIESTLEG",
+      "ELON MUSTORR",
+      "GILDSNAP",
+      "A KINDLED WRONGDOER",
+      "COLDNESS DRY QUEUES",
+      "NECK CORSAGE",
+      "ENROBED ODOR UNWANTED",
+      "SNORING TONK",
+      "HUB HAS LACY DOZE",
+      "CELITHIN RELEGLESS",
+      "PUMA RECLAIMED SCUFF"
+    ],
+    "Answers": [
+      "DERBY BASS STREET",
+      "KINGS LYNN",
+      "JARVIS AVENUE",
+      "MUMBLES",
+      "FINSBURY PARK",
+      "ST AUSTELL",
+      "AMERSHAM",
+      "HEANOR",
+      "OLD TRAFFORD",
+      "LEICESTER WESTLEIGH",
+      "MOUNT SORREL",
+      "SPALDING",
+      "KNOWLE AND DORRIDGE",
+      "DUDLEY QUEENS CROSS",
+      "ACOCKS GREEN",
+      "BARTON UNDER NEEDWOOD",
+      "KINGS NORTON",
+      "ASHBY DE LA ZOUCH",
+      "LEICESTER GLENHILLS",
+      "CARDIFF MUSEUM PLACE"
+    ]
+  },
+  {
+    "ID": 3,
+    "Name": "Company Logos",
+    "RoundType": "Picture",
+    "Description": "Guess the brand from part of the logo",
+    "Questions": ["1.png", "2.png"],
+    "Answers": ["NHS|National Health Service", "Starbucks"]
+  }
+]

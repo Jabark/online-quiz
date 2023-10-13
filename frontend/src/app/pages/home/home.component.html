@@ -1,0 +1,106 @@
+<audio #audioCountdown class="qtRound-audio">
+  <source src="/sounds/Countdown.mp3" type="audio/mpeg" />
+  Your browser does not support the audio element.
+</audio>
+<audio #audioElevator class="qtRound-audio">
+  <source src="/sounds/Elevator Music.mp3" loop type="audio/mpeg" />
+  Your browser does not support the audio element.
+</audio>
+
+<div class="appHome">
+  <ng-container *ngIf="currentRound < 0">
+    <h1>🎉 {{ winningContestantNames }} are the winners! 🎉</h1>
+    <p>That's all folks!</p>
+  </ng-container>
+  <ng-container *ngIf="currentRound === 0">
+    <h1>Welcome to the Forest Road Activity Day quiz!</h1>
+    <p>Steps to participate:</p>
+    <ol>
+      <li>
+        Make sure you have a smartphone or similar touch screen device. If you
+        do not have anything and would like to borrow something, come see me.
+      </li>
+      <li>
+        Connect to the Wi-Fi network "TALKTALK8F15E4" and enter the password
+        "9NXPF99U".
+      </li>
+      <li>
+        Scan this qrcode, or manually go to "{{ homeURL }}": <br />
+        <qrcode
+          [qrdata]="homeURL"
+          [width]="512"
+          [errorCorrectionLevel]="'M'"
+        ></qrcode>
+      </li>
+      <li>
+        It is highly suggested to rotate your device and use in landscape view
+      </li>
+      <li>Enter your name and press submit</li>
+    </ol>
+    <button *ngIf="!initiated" (click)="initiator()">Initiate Home</button>
+  </ng-container>
+
+  <ng-container *ngIf="tracker && currentRound > 0">
+    <ng-container *ngIf="isIntroPhase">
+      <h1>{{ tracker.round.Name }}</h1>
+      <p>{{ tracker.round.Description }}</p>
+    </ng-container>
+
+    <ng-container *ngIf="!isIntroPhase">
+      <ng-container [ngSwitch]="tracker.round.RoundType">
+        <p *ngSwitchCase="'Single'">{{ tracker.stageData }}</p>
+
+        <ng-container *ngSwitchCase="'Grid'">
+          <div class="appHome-gridContent">
+            <h1>{{ splitStageData(tracker.stageData)[1] }}</h1>
+            <div class="appHome-gridWhole">
+              <img
+                loading="lazy"
+                class="appHome-gridImage"
+                alt=""
+                src="/images/rounds/{{ tracker.round.ID }}/{{
+                  tracker.phase.toLowerCase()
+                }}s/{{ splitStageData(tracker.stageData)[0] }}"
+              />
+              <div class="appHome-gridContainer">
+                <ng-container
+                  *ngFor="let a of [].constructor(10); let x = index"
+                >
+                  <ng-container
+                    *ngFor="let b of [].constructor(10); let y = index"
+                  >
+                    <div
+                      class="appHome-gridCell"
+                      [class.isCorrect]="
+                        isAnswerPhase &&
+                        x.toString() + y.toString() ===
+                          splitStageData(tracker.stageData)[2]
+                      "
+                    ></div>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="appHome-content" *ngSwitchCase="'Picture'">
+          <h1 *ngIf="isAnswerPhase">
+            {{ splitStageData(tracker.stageData)[1] }}
+          </h1>
+          <img
+            class="appHome-image"
+            alt=""
+            src="/images/rounds/{{ tracker.round.ID }}/{{
+              tracker.phase.toLowerCase()
+            }}s/{{ splitStageData(tracker.stageData)[0] }}"
+          />
+        </div>
+
+        <ol class="appHome-list" *ngSwitchCase="'Multiple'">
+          <li *ngFor="let data of $any(tracker.stageData)">{{ data }}</li>
+        </ol>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</div>

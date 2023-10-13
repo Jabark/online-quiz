@@ -1,0 +1,27 @@
+.appEntry {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+
+  &-intro {
+    text-align: center;
+  }
+
+  &-form {
+    align-items: center;
+    display: flex;
+    gap: 1.6rem;
+  }
+
+  &-loading {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    justify-content: center;
+  }
+}

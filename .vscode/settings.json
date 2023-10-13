@@ -1,0 +1,12 @@
+{
+  "eslint.workingDirectories": ["frontend", "backend"],
+  "html.format.wrapAttributes": "aligned-multiple",
+  "editor.formatOnSave": true,
+  "scss.lint.duplicateProperties": "error",
+  "scss.lint.emptyRules": "error",
+  "scss.lint.float": "error",
+  "scss.lint.idSelector": "warning",
+  "scss.lint.important": "warning",
+  "scss.lint.propertyIgnoredDueToDisplay": "error",
+  "scss.lint.zeroUnits": "error"
+}

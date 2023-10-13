@@ -1,0 +1,40 @@
+<div class="appEntry">
+  <div class="appEntry-intro" *ngIf="!isComplete">
+    <h1>Welcome to the Nottingham Forest Road Activity Day Quiz 2023</h1>
+  </div>
+
+  <div class="appEntry-loading" *ngIf="isComplete">
+    <mat-spinner></mat-spinner>
+    <p>Awaiting start of quiz...</p>
+  </div>
+
+  <form
+    *ngIf="!isComplete"
+    [formGroup]="form"
+    class="appEntry-form"
+    (submit)="submitContestant()"
+  >
+    <mat-form-field class="appEntry-field">
+      <input
+        #inputContestant
+        maxlength="20"
+        class="appEntry-input"
+        matInput
+        formControlName="name"
+        [placeholder]="placeholder"
+        required
+      />
+    </mat-form-field>
+    <div class="appEntry-buttonContainer">
+      <button
+        class="appEntry-submit"
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="form.invalid"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
