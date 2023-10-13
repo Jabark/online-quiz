@@ -1,11 +1,6 @@
 import express from "express";
 const app: express.Application = express();
 
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 app.use(express.static(__dirname + "/assets"));
 
 import http from "http";
@@ -18,7 +13,6 @@ const io = new SocketIOServer(server, {
   },
 });
 
-import { readFile } from "fs/promises";
 import {
   IAnswer,
   IRound,
@@ -28,13 +22,9 @@ import {
   RoundType,
 } from "@shared";
 
-const testMode = false;
-
 const currentAnswers: IAnswer[] = [];
 let isPaused = false;
-let rounds: IRound[] = JSON.parse(
-  await readFile(`app/data/quiz${testMode ? "_test" : ""}.json`, "utf8")
-);
+let rounds: IRound[] = [];
 let contestants: IContestant[] = [];
 const tracker: ITracker = {
   phase: Phase.INTRO,
@@ -42,6 +32,15 @@ const tracker: ITracker = {
   step: 0,
   timeLeft: 10,
 };
+
+import fs from "fs";
+fs.readFile("app/data/quiz.json", "utf8", function (err, data) {
+  if (err) {
+    console.error(err);
+  } else {
+    rounds = JSON.parse(data);
+  }
+});
 
 app.get("/", (_req, res) => {
   res.send("Hello World!");
@@ -69,13 +68,7 @@ const quizRunner = async () => {
         const isMultiple = round.RoundType === RoundType.MULTIPLE;
         const isGrid = round.RoundType === RoundType.GRID;
         const numQuestions = round.Questions?.length || 0;
-        const questionTime = isMultiple
-          ? (testMode ? 2 : 30) * numQuestions
-          : isGrid
-          ? testMode
-            ? 30
-            : 60
-          : 30;
+        const questionTime = isMultiple ? 30 * numQuestions : isGrid ? 60 : 30;
         let maxSteps = 1;
 
         if (!isMultiple) {
@@ -90,7 +83,7 @@ const quizRunner = async () => {
             break;
           case Phase.QUESTION:
             tracker.phase = Phase.ANSWER;
-            tracker.timeLeft = isMultiple ? 4 * numQuestions : 10;
+            tracker.timeLeft = isMultiple ? 5 * numQuestions : 10;
             if (round.Answers) {
               assignPoints(
                 round.RoundType === RoundType.MULTIPLE
