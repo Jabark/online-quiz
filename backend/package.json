@@ -4,9 +4,8 @@
   "description": "Ecclesia Activity Day Backend",
   "author": "Jamie Barker <jaadba@gmail.com>",
   "main": "app/main.ts",
-  "type": "module",
   "scripts": {
-    "build": "tsc && cp -r app/assets build/backend/app",
+    "build": "tsc && cp -r app/assets build/backend/app && cp -r app/data build/backend/app",
     "start:dev": "ts-node-dev ./app/main.ts --respawn --transpileOnly --experimental-modules",
     "start:prod": "npm run build && nodemon build/backend/app/main.js --experimental-modules",
     "test": "echo \"Error: no test specified\" && exit 1",

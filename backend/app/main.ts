@@ -34,13 +34,18 @@ const tracker: ITracker = {
 };
 
 import fs from "fs";
-fs.readFile("app/data/quiz.json", "utf8", function (err, data) {
-  if (err) {
-    console.error(err);
-  } else {
-    rounds = JSON.parse(data);
+import path from "path";
+fs.readFile(
+  path.resolve(__dirname, "./data/quiz.json"),
+  "utf8",
+  function (err, data) {
+    if (err) {
+      console.error(err);
+    } else {
+      rounds = JSON.parse(data);
+    }
   }
-});
+);
 
 app.get("/", (_req, res) => {
   res.send("Hello World!");
